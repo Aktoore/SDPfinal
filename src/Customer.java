@@ -1,0 +1,16 @@
+public class Customer extends User {
+    public Customer(String name, String email) {
+        super(name, email);
+        this.phone = "+7 700 000 00 00";
+        this.id = "CUST_" + System.currentTimeMillis();
+    }
+
+    @Override
+    public void register() {
+        System.out.println("Customer registered: " + name);
+    }
+    @Override
+    public String getUserType() {
+        return "Customer";
+    }
+}
