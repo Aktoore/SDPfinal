@@ -25,32 +25,6 @@
     <dependencies>
 
         <dependency>
-            <groupId>com.javamex</groupId>
-            <artifactId>classmexer</artifactId>
-            <version>0.03</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/classmexer.jar</systemPath>
-        </dependency>
-
-        <dependency>
-            <groupId>gov.nist.math</groupId>
-            <artifactId>jama</artifactId>
-            <version>1.0.3</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/jama-1.0.3.jar</systemPath>
-        </dependency>
-
-        <dependency>
-            <groupId>edu.princeton.cs</groupId>
-            <artifactId>algs4</artifactId>
-            <version>1.0.4</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/algs4.jar</systemPath>
-        </dependency>
-
-
-
-        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>${junit.version}</version>
