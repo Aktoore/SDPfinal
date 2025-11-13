@@ -1,7 +1,7 @@
-public class Vehicle {
-    private String model;
-    private PricingStrat pricingStrat;
-    private boolean available;
+public abstract class Vehicle {
+    protected String model;
+    protected PricingStrat pricingStrat;
+    protected boolean available;
 
     public Vehicle(String model, PricingStrat pricingStrat)
     {
@@ -9,6 +9,8 @@ public class Vehicle {
         this.pricingStrat = pricingStrat;
         this.available = true;
     }
+
+    public abstract String getVehicleType();
 
     public void setPricingStrat(PricingStrat pricingStrat) {
         this.pricingStrat = pricingStrat;

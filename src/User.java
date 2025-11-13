@@ -11,6 +11,7 @@ public abstract class User {
     public abstract void register();
     public abstract String getUserType();
 
+
     public String getEmail() {
         return email;
     }
@@ -20,4 +21,5 @@ public abstract class User {
     public String getId() {
         return id;
     }
+    public String getName() {return name;}
 }

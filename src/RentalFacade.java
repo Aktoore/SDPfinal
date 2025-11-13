@@ -5,7 +5,7 @@ public class RentalFacade {
 
     public void addObserver(User user)
     {
-        rental.addObserver(new UserObserver(user.name));
+        rental.addObserver(new UserObserver(user.getName()));
     }
 
     public void registerUser(User user)
@@ -20,10 +20,15 @@ public class RentalFacade {
     }
     public void bookV(Vehicle vehicle, User user, int duration)
     {
+        if (!vehicle.isAvailable()) {
+            System.out.println("Booking failed" + vehicle.getModel() + " is not available!");
+            return;
+        }
+        vehicle.setAvailable(false);
         double price = vehicle.getPriceTotal(duration);
-        System.out.println(user.name + " booked "+vehicle.getModel()+" for "+ duration);
-        System.out.println("Total price "+ price);
-        notificationFacade.notifyBooking(user, vehicle.getModel());
+
+        System.out.println("Booking " + vehicle.getModel() + " to " + user.getName() + " " + price);
+
     }
 
     public void updateVeAvai(String model, boolean available)

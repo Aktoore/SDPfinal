@@ -8,6 +8,12 @@ public class NotificationFacade {
         this.smsService = new SMSService();
         this.pushService = new PushNotificationService();
     }
+    public void notifyRegistrationEmail(User user) {
+        emailService.sendEmail(user.getEmail(), "Welcome to Vehicle Rental Service!");
+    }
+    public void notifyRegistrationSMS(User user) {
+        smsService.sendSMS(user.getPhone(), "Registration successful!");
+    }
 
     public void notifyRegistration(User user) {
         emailService.sendEmail(user.getEmail(), "Welcome!");
