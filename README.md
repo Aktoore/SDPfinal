@@ -1,65 +1,66 @@
-# 🚗 Vehicle Rental System
+# Vehicle Rental System
 
-Система аренды транспортных средств с использованием паттернов проектирования.
+A vehicle rental system implemented using multiple software design patterns.
 
-## 🏗️ Архитектура проекта
+## Architecture Overview
 
-### Основные паттерны:
-- **Bridge** - разделение абстракции и реализации
-- **Decorator** - динамическое добавление функциональности  
-- **Factory** - создание объектов
-- **Facade** - унифицированный интерфейс
-- **Observer** - система уведомлений
-- **Strategy** - алгоритмы ценообразования
+### Design Patterns Used
+- **Bridge** – separates abstraction from implementation  
+- **Decorator** – adds features dynamically  
+- **Factory** – centralized object creation  
+- **Facade** – simplifies complex operations  
+- **Observer** – notifies users about changes  
+- **Strategy** – interchangeable pricing algorithms  
 
-## 📁 Структура проекта
+## Project Structure
 
-### Core Components:
-- `User.java` - абстрактный класс пользователя
-- `Customer.java`, `Admin.java` - конкретные пользователи
-- `Vehicle.java` - абстрактный класс транспортного средства
-- `Car.java`, `Bike.java`, `Van.java` - конкретные транспортные средства
+### Core Components
+- `User.java` – abstract user class  
+- `Customer.java`, `Admin.java` – concrete user types  
+- `Vehicle.java` – abstract vehicle class  
+- `Car.java`, `Bike.java`, `Van.java` – concrete vehicles  
 
-### Bridge Pattern:
-- `FuelType.java` - интерфейс типа топлива
-- `Electric.java`, `Petrol.java`, `Diesel.java` - реализации
-- `Color.java` - интерфейс цвета
-- `RedColor.java`, `BlueColor.java`, `BlackColor.java` - реализации
+### Bridge Pattern
+- `FuelType.java` – fuel type interface  
+- `Electric.java`, `Petrol.java`, `Diesel.java` – fuel implementations  
+- `Color.java` – color interface  
+- `RedColor.java`, `BlueColor.java`, `BlackColor.java` – color implementations  
 
-### Decorator Pattern:
-- `VehicleDecorator.java` - абстрактный декоратор
-- `GPSDecorator.java` - добавление GPS
-- `InsuranceDecorator.java` - добавление страховки
-- `ChildSeatDecorator.java` - добавление детского кресла
+### Decorator Pattern
+- `VehicleDecorator.java` – base decorator  
+- `GPSDecorator.java` – adds GPS  
+- `InsuranceDecorator.java` – adds insurance  
+- `ChildSeatDecorator.java` – adds child seat  
 
-### Factory Pattern:
-- `UserFactory.java` - фабрика пользователей
-- `VehicleFactory.java` - фабрика транспортных средств
+### Factory Pattern
+- `UserFactory.java` – creates users  
+- `VehicleFactory.java` – creates vehicles  
 
-### Other Patterns:
-- `PricingStrat.java` - стратегия ценообразования
-- `Hourly.java`, `Daily.java` - конкретные стратегии
-- `Observer.java`, `UserObserver.java` - наблюдатель
-- `RentalFacade.java` - фасад для упрощения работы
-- `NotificationFacade.java` - фасад уведомлений
+### Other Patterns
+- `PricingStrat.java` – pricing strategy interface  
+- `Hourly.java`, `Daily.java` – pricing strategy implementations  
+- `Observer.java`, `UserObserver.java` – observer system  
+- `RentalFacade.java` – unified rental interface  
+- `NotificationFacade.java` – notification management  
 
-## 🎯 Преимущества архитектуры
+## Benefits of the Architecture
 
-### Bridge Pattern:
-- **Гибкость**: Легко добавлять новые цвета и типы топлива
-- **Расширяемость**: Отделяет абстракцию от реализации
-- **Поддержка**: Упрощает модификацию системы
+### Bridge Pattern
+- Easy to add new fuel types or colors  
+- Abstraction is fully separated from implementation  
+- Increases flexibility and maintainability  
 
-### Decorator Pattern:
-- **Динамичность**: Добавление функций без изменения классов
-- **Комбинируемость**: Несколько декораторов можно использовать вместе
-- **Открытость/закрытость**: Система открыта для расширения, но закрыта для изменений
+### Decorator Pattern
+- Adds functionality without modifying existing classes  
+- Multiple decorators can be combined  
+- Supports the open/closed principle  
 
-## 🚀 Запуск проекта
+## Running the Project
 
 ```bash
-# Компиляция
+
 javac -d target/classes src/*.java
 
-# Запуск
+java -cp target/classes Main
+javac -d target/classes src/*.java
 java -cp target/classes Main
