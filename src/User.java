@@ -4,9 +4,10 @@ public abstract class User {
     protected String phone;
     protected String id;
 
-    public User(String name, String email) {
+    public User(String name, String email,String phone) {
         this.name = name;
         this.email = email;
+        this.phone = phone;
     }
     public abstract void register();
     public abstract String getUserType();

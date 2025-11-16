@@ -10,7 +10,7 @@ public class Main {
         RentalFacade facade = new RentalFacade();
         
         // Создаем админа
-        users.put("admin@gmail.com", UserFactory.createUser("admin", "Admin", "admin@gmail.com"));
+        users.put("admin@gmail.com", UserFactory.createUser("admin", "Admin", "admin@gmail.com","87775554466"));
         
         // СОЗДАЕМ ТРАНСПОРТ С BRIDGE ПАТТЕРНОМ (цвет и топливо)
         Vehicle car = VehicleFactory.createVehicle("car", "Toyota Camry", 
@@ -34,10 +34,10 @@ public class Main {
         facade.addVehicle(bike);
         facade.addVehicle(decoratedVan);
         
-        System.out.println("=== VEHICLE RENTAL SYSTEM WITH BRIDGE & DECORATOR ===");
+        System.out.println(" VEHICLE RENTAL SYSTEM WITH BRIDGE & DECORATOR ");
         
         while(true) {
-            System.out.println("\n=== MAIN MENU ===");
+            System.out.println("\n MAIN MENU ");
             System.out.println("1. Register");
             System.out.println("2. Login"); 
             System.out.println("3. Exit");
@@ -52,13 +52,15 @@ public class Main {
                 String name = sc.nextLine();
                 System.out.print("Email: ");
                 String email = sc.nextLine();
+                System.out.print("Phone: ");
+                String phone = sc.nextLine();
                 
                 if (users.containsKey(email)) {
                     System.out.println("Email already exists!");
                     continue;
                 }
                 
-                User user = UserFactory.createUser("customer", name, email);
+                User user = UserFactory.createUser("customer", name, email,phone);
                 facade.registerUser(user);
                 facade.addObserver(user);
                 users.put(email, user);
@@ -79,7 +81,7 @@ public class Main {
                 
                 // Меню пользователя
                 while (true) {
-                    System.out.println("\n=== USER MENU ===");
+                    System.out.println("\n USER MENU ");
                     System.out.println("1. View vehicles");
                     System.out.println("2. Book vehicle");
                     System.out.println("3. Logout");
@@ -90,7 +92,7 @@ public class Main {
                     
                     if (action == 1) {
                         // Просмотр транспорта с информацией о Bridge (цвет и топливо)
-                        System.out.println("\n=== AVAILABLE VEHICLES ===");
+                        System.out.println("\n AVAILABLE VEHICLES ");
                         System.out.println("1. " + decoratedCar.getModel() + 
                             " [" + (decoratedCar.isAvailable() ? "Available" : "Booked") + "]" +
                             " | Type: Car" +
@@ -114,7 +116,7 @@ public class Main {
                             
                     } else if (action == 2) {
                         // Бронирование
-                        System.out.println("\n=== BOOK VEHICLE ===");
+                        System.out.println("\n BOOK VEHICLE ");
                         System.out.println("Select vehicle (1-Camry, 2-Yamaha, 3-Sprinter): ");
                         int vehicleChoice = sc.nextInt();
                         System.out.print("Duration (hours): ");

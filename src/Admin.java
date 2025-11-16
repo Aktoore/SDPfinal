@@ -1,7 +1,6 @@
 public class Admin extends User {
-    public Admin(String name, String email) {
-        super(name, email);
-        this.phone = "+7 700 000 00 01";
+    public Admin(String name, String email,String phone) {
+        super(name, email,phone);
         this.id = "ADMIN_" + System.currentTimeMillis();
     }
 

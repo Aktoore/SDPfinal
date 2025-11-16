@@ -1,7 +1,6 @@
 public class Customer extends User {
-    public Customer(String name, String email) {
-        super(name, email);
-        this.phone = "+7 700 000 00 00";
+    public Customer(String name, String email,String phone) {
+        super(name, email,phone);
         this.id = "CUST_" + System.currentTimeMillis();
     }
 
