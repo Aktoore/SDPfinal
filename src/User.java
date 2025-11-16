@@ -3,6 +3,7 @@ public abstract class User {
     protected String email;
     protected String phone;
     protected String id;
+    protected String password;
 
     public User(String name, String email,String phone) {
         this.name = name;
@@ -23,4 +24,12 @@ public abstract class User {
         return id;
     }
     public String getName() {return name;}
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public boolean checkPassword(String password) {
+        return this.password != null && this.password.equals(password);
+    }
 }

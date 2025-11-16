@@ -11,6 +11,7 @@ public class Main {
         
         // Создаем админа
         users.put("admin@gmail.com", UserFactory.createUser("admin", "Admin", "admin@gmail.com","87775554466"));
+
         
         // СОЗДАЕМ ТРАНСПОРТ С BRIDGE ПАТТЕРНОМ (цвет и топливо)
         Vehicle car = VehicleFactory.createVehicle("car", "Toyota Camry", 
@@ -54,6 +55,8 @@ public class Main {
                 String email = sc.nextLine();
                 System.out.print("Phone: ");
                 String phone = sc.nextLine();
+                System.out.print("Password: ");
+                String password = sc.nextLine();
                 
                 if (users.containsKey(email)) {
                     System.out.println("Email already exists!");
@@ -61,13 +64,14 @@ public class Main {
                 }
                 
                 User user = UserFactory.createUser("customer", name, email,phone);
+                user.setPassword(password);
                 facade.registerUser(user);
                 facade.addObserver(user);
                 users.put(email, user);
                 System.out.println("User registered successfully!");
                 
             } else if (choice == 2) {
-                // Логин
+                // Логин с проверкой пароля
                 System.out.print("Email: ");
                 String email = sc.nextLine();
                 
@@ -77,70 +81,146 @@ public class Main {
                 }
                 
                 User user = users.get(email);
+                System.out.print("Password: ");
+                String password = sc.nextLine();
+
+                if (!user.checkPassword(password)) {
+                    System.out.println("Wrong password!");
+                    continue;
+                }
                 System.out.println("Welcome, " + user.getName() + "!");
-                
-                // Меню пользователя
-                while (true) {
-                    System.out.println("\n USER MENU ");
-                    System.out.println("1. View vehicles");
-                    System.out.println("2. Book vehicle");
-                    System.out.println("3. Logout");
-                    System.out.print("Enter your choice: ");
-                    
-                    int action = sc.nextInt();
-                    sc.nextLine();
-                    
-                    if (action == 1) {
-                        // Просмотр транспорта с информацией о Bridge (цвет и топливо)
-                        System.out.println("\n AVAILABLE VEHICLES ");
-                        System.out.println("1. " + decoratedCar.getModel() + 
-                            " [" + (decoratedCar.isAvailable() ? "Available" : "Booked") + "]" +
-                            " | Type: Car" +
-                            " | Fuel: " + decoratedCar.getFuelInfo() +
-                            " | Color: " + decoratedCar.getColorInfo() +
-                            " | Base Price: $" + decoratedCar.getPriceTotal(1) + "/hour");
-                        
-                        System.out.println("2. " + bike.getModel() + 
-                            " [" + (bike.isAvailable() ? "Available" : "Booked") + "]" +
-                            " | Type: Bike" + 
-                            " | Fuel: " + bike.getFuelInfo() +
-                            " | Color: " + bike.getColorInfo() +
-                            " | Base Price: $" + bike.getPriceTotal(24) + "/day");
-                        
-                        System.out.println("3. " + decoratedVan.getModel() + 
-                            " [" + (decoratedVan.isAvailable() ? "Available" : "Booked") + "]" +
-                            " | Type: Van" +
-                            " | Fuel: " + decoratedVan.getFuelInfo() +
-                            " | Color: " + decoratedVan.getColorInfo() +
-                            " | Base Price: $" + decoratedVan.getPriceTotal(1) + "/hour");
-                            
-                    } else if (action == 2) {
-                        // Бронирование
-                        System.out.println("\n BOOK VEHICLE ");
-                        System.out.println("Select vehicle (1-Camry, 2-Yamaha, 3-Sprinter): ");
-                        int vehicleChoice = sc.nextInt();
-                        System.out.print("Duration (hours): ");
-                        int duration = sc.nextInt();
+
+                if (user.getUserType().equals("Admin")) {
+                    while (true) {
+                        System.out.println("\n ADMIN MENU ");
+                        System.out.println("1. Change pricing");
+                        System.out.println("2. Update availability");
+                        System.out.println("3. Logout");
+                        System.out.print("Enter your choice: ");
+
+                        int action = sc.nextInt();
                         sc.nextLine();
-                        
-                        Vehicle selected = null;
-                        if (vehicleChoice == 1) selected = decoratedCar;
-                        else if (vehicleChoice == 2) selected = bike;
-                        else if (vehicleChoice == 3) selected = decoratedVan;
-                        
-                        if (selected != null) {
-                            facade.bookV(selected, user, duration);
-                        } else {
-                            System.out.println("Invalid vehicle selection!");
+
+                        if (action == 1) {
+                            // Изменение цены для транспорта
+                            System.out.println("\nAvailable vehicles:");
+                            System.out.println("1. Toyota Camry (Car)");
+                            System.out.println("2. Yamaha R1 (Bike)");
+                            System.out.println("3. Mercedes Sprinter (Van)");
+                            System.out.print("Select vehicle (1-3): ");
+                            int vehicleChoice = sc.nextInt();
+
+                            System.out.print("Pricing (1-Hourly, 2-Daily): ");
+                            int pricingType = sc.nextInt();
+                            System.out.print("Rate ($): ");
+                            double rate = sc.nextDouble();
+                            sc.nextLine();
+
+                            Vehicle baseVehicle = null;
+                            if (vehicleChoice == 1) baseVehicle = car;
+                            else if (vehicleChoice == 2) baseVehicle = bike;
+                            else if (vehicleChoice == 3) baseVehicle = van;
+
+                            if (baseVehicle != null) {
+                                PricingStrat newStrategy = (pricingType == 1) ? new Hourly(rate) : new Daily(rate);
+                                baseVehicle.setPricingStrat(newStrategy);
+                                System.out.println("Pricing updated to $" + rate + " per " +
+                                        (pricingType == 1 ? "hour" : "day") + "!");
+                            } else {
+                                System.out.println("Invalid vehicle choice!");
+                            }
+                        } else if (action == 2) {
+                            // Изменение доступности транспорта
+                            System.out.println("\nVehicles in system:");
+                            System.out.println("1. Toyota Camry");
+                            System.out.println("2. Yamaha R1");
+                            System.out.println("3. Mercedes Sprinter");
+                            System.out.print("Select vehicle (1-3): ");
+                            int vehChoice = sc.nextInt();
+                            System.out.print("Available (true/false): ");
+                            boolean available = sc.nextBoolean();
+                            sc.nextLine();
+
+                            // Используем правильное имя модели
+                            String model = "";
+                            if (vehChoice == 1) model = "Toyota Camry";
+                            else if (vehChoice == 2) model = "Yamaha R1";
+                            else if (vehChoice == 3) model = "Mercedes Sprinter";
+
+                            if (!model.isEmpty()) {
+                                facade.updateVeAvai(model, available);
+                                System.out.println(model + " is now " + (available ? "available" : "unavailable") + "!");
+                            } else {
+                                System.out.println("Invalid choice!");
+                            }
+                        } else if (action == 3) {
+                            break;
                         }
-                        
-                    } else if (action == 3) {
-                        break;
-                    } else {
-                        System.out.println("Invalid choice!");
+                    }
+                } else {
+                    // Меню пользователя
+                    while (true) {
+                        System.out.println("\n USER MENU ");
+                        System.out.println("1. View vehicles");
+                        System.out.println("2. Book vehicle");
+                        System.out.println("3. Logout");
+                        System.out.print("Enter your choice: ");
+
+                        int action = sc.nextInt();
+                        sc.nextLine();
+
+                        if (action == 1) {
+                            // Просмотр транспорта с информацией о Bridge (цвет и топливо)
+                            System.out.println("\n AVAILABLE VEHICLES ");
+                            System.out.println("1. " + decoratedCar.getModel() +
+                                    " [" + (decoratedCar.isAvailable() ? "Available" : "Booked") + "]" +
+                                    " | Type: Car" +
+                                    " | Fuel: " + decoratedCar.getFuelInfo() +
+                                    " | Color: " + decoratedCar.getColorInfo() +
+                                    " | Base Price: $" + decoratedCar.getPriceTotal(1) + "/hour");
+
+                            System.out.println("2. " + bike.getModel() +
+                                    " [" + (bike.isAvailable() ? "Available" : "Booked") + "]" +
+                                    " | Type: Bike" +
+                                    " | Fuel: " + bike.getFuelInfo() +
+                                    " | Color: " + bike.getColorInfo() +
+                                    " | Base Price: $" + bike.getPriceTotal(24) + "/day");
+
+                            System.out.println("3. " + decoratedVan.getModel() +
+                                    " [" + (decoratedVan.isAvailable() ? "Available" : "Booked") + "]" +
+                                    " | Type: Van" +
+                                    " | Fuel: " + decoratedVan.getFuelInfo() +
+                                    " | Color: " + decoratedVan.getColorInfo() +
+                                    " | Base Price: $" + decoratedVan.getPriceTotal(1) + "/hour");
+
+                        } else if (action == 2) {
+                            // Бронирование
+                            System.out.println("\n BOOK VEHICLE ");
+                            System.out.println("Select vehicle (1-Camry, 2-Yamaha, 3-Sprinter): ");
+                            int vehicleChoice = sc.nextInt();
+                            System.out.print("Duration (hours): ");
+                            int duration = sc.nextInt();
+                            sc.nextLine();
+
+                            Vehicle selected = null;
+                            if (vehicleChoice == 1) selected = decoratedCar;
+                            else if (vehicleChoice == 2) selected = bike;
+                            else if (vehicleChoice == 3) selected = decoratedVan;
+
+                            if (selected != null) {
+                                facade.bookV(selected, user, duration);
+                            } else {
+                                System.out.println("Invalid vehicle selection!");
+                            }
+
+                        } else if (action == 3) {
+                            break;
+                        } else {
+                            System.out.println("Invalid choice!");
+                        }
                     }
                 }
-                
+
             } else if (choice == 3) {
                 System.out.println("Thank you for using Vehicle Rental System!");
                 break;

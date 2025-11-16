@@ -35,4 +35,9 @@ public class RentalFacade {
     {
         rental.updateVehiclesA(model,available);
     }
+
+    public void changePricingStrategy(Vehicle vehicle, PricingStrat newStrategy) {
+        vehicle.setPricingStrat(newStrategy);
+        System.out.println("Pricing strategy changed for " + vehicle.getModel());
+    }
 }
